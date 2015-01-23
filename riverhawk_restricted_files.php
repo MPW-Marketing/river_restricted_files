@@ -10,7 +10,7 @@
  */
  
  function access_form () {
- $cont .= '<p>Please Enter Your Information To Acces This File<br /><br /><sup>All fields are required</sup></p>
+ $cont .= '<p>Please Enter Your Information To Access These Files<br /><br /><sup>All fields are required</sup></p>
  <script>function validateForm() {
     var x = document.forms["file-access"]["fullname"].value;
 	var y = document.forms["file-access"]["emailadd"].value;
@@ -21,7 +21,7 @@
     }
 }
 </script>
- <form name="file-access" action="http://riverhawk.com/download-files/" onsubmit="return validateForm()" method="post" enctype="multipart/form-data">
+ <form name="file-access" action="'.$_SERVER[REQUEST_URI].'" onsubmit="return validateForm()" method="post" enctype="multipart/form-data">
    <input type="hidden" name="form_title" value="Restricted Download Request"/>
    Name: <br />
    <input type="text" name="fullname" value=""/><br/>
@@ -39,11 +39,11 @@ return do_shortcode( $cont );
 add_shortcode ('file_access' , 'access_form' );
 
 
-function display_restricted_files () {
+function display_restricted_files ($atts, $content = null ) {
 $company = $_POST["company"];
 $submit_name = $_POST["fullname"];
 $submit_email = $_POST["emailadd"];
-$send_to = "info@riverhawk.com";
+$send_to = "damon@mpwmarketing.com";
 $send_headers = 'Bcc: damon@mpwmarketing.com' . "\r\n";
 $send_subject = "Restricted File Access Attempted";
 
@@ -132,6 +132,7 @@ $cont .= '[cfdb-save-form-post]';
 if (!$access_granted){
 	$cont .= '[file_access]';
 } elseif ($access_granted){
+	if ($dl_cookie != "YES"){
 	if ($cond_comp != ''){
 	foreach ($restricted_companies as $rest_comp) {
 	/*if (strpos($rest_comp,$cond_comp) !== false) {
@@ -162,12 +163,16 @@ if (!$access_granted){
 	}
 	}
 }
+}
 if ($match_made == true){$cont .= '<p>We\'re sorry. Your request cannot be processed at this time. Please contact us at <a href="mailto:info@riverhawk.com">info@riverhawk.com</a> for assistance with downloading this manual.</p>';}
 if ($match_made == false){
 	$cookie_nam = "allowdownload";
 	$cookie_val = "YES";
 setcookie($cookie_nam, $cookie_val, time()+2592000, "/");
-$cont .= '<p>Use the link below to download your file</p>
+
+/*$cont .= '<p>Please use the link below to download your file</p>
+
+<a href="http://riverhawk.com/manual-downloads/">Download Manuals</a>
 <table width="672">
 <tbody>
 	<tr>
@@ -179,7 +184,12 @@ $cont .= '<p>Use the link below to download your file</p>
 	<td width="540"><a href="http://riverhawk.com/wp-content/uploads/riverhawk-manuals/IM-354-HC-6576.pdf" target="_blank">JCI Part Number 029-26945-000; Riverhawk Part Number HC-6576</a></td>
 	</tr>
 </tbod>
-</table>';
+</table>';*/
+	$cont .= '<script>jQuery( document ).ready(function() {
+				jQuery(" .displayed a[href$=\'pdf\']").attr(\'target\',\'_blank\');
+			})
+		</script>';
+$cont .= '<span class="displayed">'. $content.'</span>';
 }
 if($cond_name != ''||$cond_comp != ''||$cond_email != ''){
 if ($match_made){$granted_or_denied = "Denied";} elseif(!$match_made){$granted_or_denied = "Allowed";}
