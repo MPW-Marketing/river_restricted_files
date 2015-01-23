@@ -43,7 +43,7 @@ function display_restricted_files ($atts, $content = null ) {
 $company = $_POST["company"];
 $submit_name = $_POST["fullname"];
 $submit_email = $_POST["emailadd"];
-$send_to = "damon@mpwmarketing.com";
+$send_to = "info@riverhawk.com";
 $send_headers = 'Bcc: damon@mpwmarketing.com' . "\r\n";
 $send_subject = "Restricted File Access Attempted";
 
@@ -170,21 +170,7 @@ if ($match_made == false){
 	$cookie_val = "YES";
 setcookie($cookie_nam, $cookie_val, time()+2592000, "/");
 
-/*$cont .= '<p>Please use the link below to download your file</p>
 
-<a href="http://riverhawk.com/manual-downloads/">Download Manuals</a>
-<table width="672">
-<tbody>
-	<tr>
-	<td width="132">Manual Number</td>
-	<td width="540">Description</td>
-	</tr>
-	<tr>
-	<td width="132"><a href="http://riverhawk.com/wp-content/uploads/riverhawk-manuals/IM-354-HC-6576.pdf" target="_blank">IM-354</a></td>
-	<td width="540"><a href="http://riverhawk.com/wp-content/uploads/riverhawk-manuals/IM-354-HC-6576.pdf" target="_blank">JCI Part Number 029-26945-000; Riverhawk Part Number HC-6576</a></td>
-	</tr>
-</tbod>
-</table>';*/
 	$cont .= '<script>jQuery( document ).ready(function() {
 				jQuery(" .displayed a[href$=\'pdf\']").attr(\'target\',\'_blank\');
 			})
